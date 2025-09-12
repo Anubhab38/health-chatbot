@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nanite Chatbot</title>
+    <!-- Favicon -->
+    <link
+      rel="icon"
+      type="image/png"
+      href="icons/letter-n-svgrepo-com (3).png"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Martel+Sans:wght@200;300;400;600;700;800;900&family=Mozilla+Text:wght@200..700&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+
+      body {
+        background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
+        font-family: "Poppins", "Inter", Arial, sans-serif;
+      }
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #d1d1d1;
+        border-radius: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      /* AI Icon Styling */
+      .ai-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+    </style>
+  </head>
+  <body class="flex flex-col min-h-screen text-gray-900">
+    <!-- Sticky Header -->
+    <header
+      class="sticky top-0 z-20 w-full bg-white border-b border-gray-200 shadow-sm"
+    >
+      <div class="max-w-3xl mx-auto px-4 py-3 flex items-center justify-center">
+        <span class="text-xl font-bold" style="color: #8a82dd"
+          >NANITE</span
+        >
+      </div>
+    </header>
+
+    <!-- Chat Section -->
+    <main class="flex flex-1 flex-col items-center px-2 md:px-0">
+      <div
+        id="chat-container"
+        class="w-full max-w-3xl flex-1 mt-6 mb-32 space-y-6 overflow-y-auto custom-scrollbar px-1"
+      >
+        <div class="flex items-start gap-3">
+          <div class="w-10 h-10 rounded-full overflow-hidden">
+            <img
+              src="icons/letter-n-svgrepo-com (3).png"
+              alt="AI Logo"
+              class="ai-icon"
+            />
+          </div>
+          <div
+            class="bg-[#F5EFE6] border border-gray-200 p-3 rounded-2xl text-sm leading-relaxed max-w-[75%] shadow-sm"
+          >
+            Hello user! How can i assist you today?
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Input Box -->
+    <form
+      id="chat-form"
+      class="fixed bottom-0 left-0 w-full flex justify-center pb-4 bg-gradient-to-b from-transparent to-white z-10"
+    >
+      <div
+        class="w-full max-w-3xl flex bg-white rounded-2xl p-2 shadow-md border border-gray-200"
+      >
+        <textarea
+          id="chat-input"
+          aria-label="Type your message…"
+          rows="1"
+          class="resize-none flex-1 bg-transparent text-sm text-gray-900 placeholder-gray-400 outline-none p-2"
+          style="min-height: 40px; max-height: 140px"
+          placeholder="Ask me anything..."
+        ></textarea>
+        <button
+          type="submit"
+          class="ml-2 px-4 py-2 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 hover:opacity-90 text-white font-medium transition"
+          aria-label="Send"
+        >
+          Send
+        </button>
+      </div>
+    </form>
+
+    <!-- Script -->
+    <script>
+      const form = document.getElementById("chat-form");
+      const input = document.getElementById("chat-input");
+      const chat = document.getElementById("chat-container");
+
+      // Resize textarea
+      input.addEventListener("input", autoResize);
+      function autoResize() {
+        input.style.height = "40px";
+        input.style.height = Math.min(input.scrollHeight, 140) + "px";
+      }
+
+      // Send on Enter except Shift+Enter
+      input.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" && !e.shiftKey) {
+          e.preventDefault();
+          form.requestSubmit();
+        }
+      });
+
+      // Handle form submit & API call
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const text = input.value.trim();
+        if (!text) return;
+
+        appendMessage(text, "user");
+        input.value = "";
+        autoResize();
+
+        try {
+          const res = await fetch("http://localhost:4000/api/message", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ text }),
+          });
+
+          const data = await res.json();
+          const reply = data.answer
+            ? data.answer + (data.disclaimer ? "\n\n" + data.disclaimer : "")
+            : "⚠️ No reply.";
+          appendMessage(reply, "bot");
+        } catch (err) {
+          console.error(err);
+          appendMessage("⚠️ Error: Could not connect to backend.", "bot");
+        }
+      });
+
+      // Add messages to chat
+      function appendMessage(text, sender) {
+        const wrapper = document.createElement("div");
+        wrapper.className =
+          "flex items-start gap-3" +
+          (sender === "user" ? " flex-row-reverse" : "");
+
+        let avatar;
+        if (sender === "user") {
+          // User icon stays as "U"
+          avatar = document.createElement("div");
+          avatar.className =
+            "rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 w-8 h-8 flex items-center justify-center text-white font-bold text-sm";
+          avatar.textContent = "U";
+        } else {
+          // AI icon is always PNG
+          avatar = document.createElement("div");
+          avatar.className = "w-10 h-10 rounded-full overflow-hidden";
+          const img = document.createElement("img");
+          img.src = "icons/letter-n-svgrepo-com (3).png"; //
+          img.alt = "AI Logo";
+          img.className = "ai-icon";
+          avatar.appendChild(img);
+        }
+
+        const bubble = document.createElement("div");
+        bubble.className =
+          "p-3 rounded-2xl text-sm leading-relaxed max-w-[75%] shadow-sm";
+
+        if (sender === "user") {
+          bubble.style.backgroundColor = "#9EC6F3"; // user bubble
+          bubble.style.color = "#000";
+        } else {
+          bubble.style.backgroundColor = "#F5EFE6"; // AI bubble
+          bubble.style.color = "#000";
+        }
+
+        bubble.textContent = text;
+
+        wrapper.appendChild(avatar);
+        wrapper.appendChild(bubble);
+        chat.appendChild(wrapper);
+        chat.scrollTop = chat.scrollHeight;
+      }
+    </script>
+  </body>
+</html>
