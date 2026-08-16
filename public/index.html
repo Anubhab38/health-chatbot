@@ -2,160 +2,190 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Nanite Chatbot</title>
-    <!-- Favicon -->
-    <link
-      rel="icon"
-      type="image/png"
-      href="icons/letter-n-svgrepo-com (3).png"
-    />
-    <!-- Local Tailwind CSS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Health-Mitra</title>
+    <!-- Zalando Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zalando+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+    <!-- Remix Icon -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
     <link rel="stylesheet" href="output.css" />
-    <style>
-      @import url("https://fonts.googleapis.com/css2?family=Martel+Sans:wght@200;300;400;600;700;800;900&family=Mozilla+Text:wght@200..700&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
-
-      body {
-        background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
-        font-family: "Poppins", "Inter", Arial, sans-serif;
-      }
-      ::-webkit-scrollbar {
-        width: 8px;
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #d1d1d1;
-        border-radius: 8px;
-      }
-      ::-webkit-scrollbar-track {
-        background: transparent;
-      }
-      /* AI Icon Styling */
-      .ai-icon {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        object-fit: cover;
-      }
-    </style>
   </head>
-  <body class="flex flex-col min-h-screen text-gray-900">
-    <!-- Sticky Header -->
-    <header
-      class="sticky top-0 z-20 w-full bg-white border-b border-gray-200 shadow-sm"
-    >
-      <div class="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between">
-        <span class="text-xl font-bold" style="color: #8a82dd">NANITE</span>
-        <div class="flex items-center gap-4">
-          <button id="contact-btn" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition">Contact</button>
-          <button id="login-btn" class="text-sm font-medium px-4 py-1.5 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:opacity-90 transition shadow-sm">Login</button>
+  <body class="flex flex-col min-h-screen">
+    
+    <!-- Sticky Navbar -->
+    <header id="main-navbar" class="sticky top-0 z-[100] w-full apple-navbar">
+      <div class="w-full px-6 h-[56px] flex items-center justify-between relative z-10">
+        <div class="flex items-center gap-2 shrink-0">
+          <div class="w-[26px] h-[26px] rounded-[12px] bg-[rgba(255,255,255,0.18)] flex items-center justify-center text-white">
+            <i class="ri-heart-pulse-fill text-[14px]"></i>
+          </div>
+          <span class="text-headline">HEALTH-MITRA</span>
+        </div>
+        
+        <div class="flex items-center gap-4 md:gap-[16px] shrink-0">
+          <!-- Desktop Nav Links -->
+          <div class="hidden md:flex items-center gap-[20px]">
+            <button id="new-chat-btn" class="btn-primary btn-glow-blue">
+              <i class="ri-add-line text-[16px]"></i>
+              <span>New Chat</span>
+            </button>
+            <div class="flex items-center gap-[8px]">
+              <a href="#" class="nav-link">About</a>
+              <a href="#" class="nav-link">Contact</a>
+            </div>
+          </div>
+
+          <!-- Mobile Nav (Dropdown + Icon Button) -->
+          <div class="flex md:hidden items-center gap-2 relative">
+            <button id="new-chat-btn-mobile" class="btn-primary btn-primary-mobile btn-glow-blue">
+              <i class="ri-add-line text-[20px]"></i>
+            </button>
+            <button id="mobile-menu-btn" class="icon-btn w-8 h-8 flex items-center justify-center rounded-full text-[rgba(255,255,255,0.82)] hover:bg-[rgba(255,255,255,0.14)] hover:text-white transition-colors">
+              <i class="ri-more-2-fill text-[20px]"></i>
+            </button>
+            <!-- Dropdown -->
+            <div id="mobile-dropdown" class="absolute top-[40px] right-0 w-[150px] dropdown-menu hidden flex-col p-2 gap-1 z-50">
+              <a href="#" class="nav-link w-full text-left" style="color:var(--color-label-secondary);">About</a>
+              <a href="#" class="nav-link w-full text-left" style="color:var(--color-label-secondary);">Contact</a>
+            </div>
+          </div>
         </div>
       </div>
     </header>
 
-    <!-- Contact Modal -->
-    <div id="contact-modal" class="fixed inset-0 bg-black/40 z-30 hidden flex items-center justify-center backdrop-blur-sm">
-      <div class="bg-white rounded-2xl p-6 shadow-xl max-w-sm w-full mx-4 border border-gray-100">
-        <h3 class="text-xl font-bold text-gray-900 mb-2">Contact Us</h3>
-        <p class="text-sm text-gray-600 mb-4">For any health inquiries or support, please reach out to our team.</p>
-        <div class="bg-gray-50 rounded-lg p-3 mb-6">
-          <p class="text-sm font-medium text-gray-800 mb-1">📧 support@nanitehealth.in</p>
-          <p class="text-sm font-medium text-gray-800">📞 +91 98765 43210</p>
-        </div>
-        <button id="close-modal-btn" class="w-full py-2 bg-gray-100 text-gray-800 rounded-lg hover:bg-gray-200 transition font-medium">Close</button>
-      </div>
-    </div>
-
-    <!-- Chat Section -->
-    <main class="flex flex-1 flex-col items-center px-2 md:px-0">
-      <div
-        id="chat-container"
-        class="w-full max-w-3xl flex-1 mt-6 mb-32 space-y-6 overflow-y-auto custom-scrollbar px-1"
-      >
-        <div class="flex items-start gap-3">
-          <div class="w-10 h-10 rounded-full overflow-hidden">
-            <img
-              src="icons/letter-n-svgrepo-com (3).png"
-              alt="AI Logo"
-              class="ai-icon"
-            />
+    <!-- Main Content Area -->
+    <main class="flex flex-1 flex-col w-full relative">
+      <div class="max-w-[760px] w-full mx-auto px-5 pt-6 pb-[140px] flex-1 flex flex-col gap-4" id="chat-container">
+        
+        <!-- Empty State (shown initially) -->
+        <div id="empty-state" class="flex flex-col items-center justify-center mt-12 mb-8 animate-[slideUpFade_0.5s_ease-out]">
+          <div class="w-16 h-16 rounded-full bot-avatar mb-4 flex items-center justify-center text-white shadow-md">
+            <i class="ri-heart-pulse-fill text-3xl"></i>
           </div>
-          <div
-            class="bg-[#F5EFE6] border border-gray-200 p-3 rounded-2xl text-sm leading-relaxed max-w-[75%] shadow-sm"
-          >
-            Hello user! How can i assist you today?
+          <h1 class="text-large-title text-center mb-6">How can I help you today?</h1>
+          <div class="flex flex-wrap justify-center gap-2 max-w-lg">
+            <button class="suggestion-btn btn-glow-blue bg-[var(--color-bg-card)] border border-[var(--color-border-light)] rounded-[999px] px-4 py-2.5 text-callout hover:shadow-sm">
+              I have a headache
+            </button>
+            <button class="suggestion-btn btn-glow-blue bg-[var(--color-bg-card)] border border-[var(--color-border-light)] rounded-[999px] px-4 py-2.5 text-callout hover:shadow-sm">
+              First aid for burns
+            </button>
+            <button class="suggestion-btn btn-glow-blue bg-[var(--color-bg-card)] border border-[var(--color-border-light)] rounded-[999px] px-4 py-2.5 text-callout hover:shadow-sm">
+              Healthy diet tips
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Input Bar (Floating Sticky Bottom) -->
+      <div class="sticky bottom-0 w-full input-bar-fade z-50">
+        <div class="w-full max-w-[760px] mx-auto px-5 pt-4 pb-5">
+          <form id="chat-form" class="input-pill">
+            <textarea
+              id="chat-input"
+              rows="1"
+              placeholder="Message..."
+              class="flex-1 bg-transparent border-none outline-none resize-none text-body py-1.5 max-h-[140px]"
+            ></textarea>
+
+            <button type="submit" id="send-btn" disabled class="btn-send btn-glow-white w-[36px] h-[36px] rounded-full flex items-center justify-center shrink-0">
+              <i class="ri-arrow-up-line text-lg"></i>
+            </button>
+          </form>
+          <div class="text-center mt-3">
+            <span class="text-footnote text-[var(--color-label-tertiary)]">This assistant can make mistakes. Verify important information with a doctor.</span>
           </div>
         </div>
       </div>
     </main>
 
-    <!-- Input Box -->
-    <form
-      id="chat-form"
-      class="fixed bottom-0 left-0 w-full flex flex-col items-center pb-2 bg-gradient-to-b from-transparent to-white z-10"
-    >
-      <div
-        class="w-full max-w-3xl flex bg-white rounded-2xl p-2 shadow-md border border-gray-200 mb-2"
-      >
-        <textarea
-          id="chat-input"
-          aria-label="Type your message…"
-          rows="1"
-          class="resize-none flex-1 bg-transparent text-sm text-gray-900 placeholder-gray-400 outline-none p-2"
-          style="min-height: 40px; max-height: 140px"
-          placeholder="Ask me anything..."
-        ></textarea>
-        <button
-          type="submit"
-          class="ml-2 px-4 py-2 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 hover:opacity-90 text-white font-medium transition"
-          aria-label="Send"
-        >
-          Send
-        </button>
+    <!-- Optional Thin Footer -->
+    <footer class="w-full bg-[var(--color-bg-card)] border-t border-[var(--color-divider)] py-4 px-5">
+      <div class="max-w-[760px] mx-auto text-center text-footnote text-[var(--color-label-secondary)]">
+        © 2026 Health-Mitra. All rights reserved. 
+        <span class="mx-1">·</span> 
+        <a href="#" class="hover:underline">Privacy</a> 
+        <span class="mx-1">·</span> 
+        <a href="#" class="hover:underline">Terms</a>
       </div>
-      <p class="text-[11px] text-gray-400 font-medium tracking-wide">Nanite Health Assistant AI. Please consult a doctor for medical advice.</p>
-    </form>
+    </footer>
 
-    <!-- Script -->
+    <!-- JavaScript -->
     <script>
       const form = document.getElementById("chat-form");
       const input = document.getElementById("chat-input");
       const chat = document.getElementById("chat-container");
-
-      // Modal Logic
-      const contactBtn = document.getElementById("contact-btn");
-      const contactModal = document.getElementById("contact-modal");
-      const closeModalBtn = document.getElementById("close-modal-btn");
-
-      contactBtn.addEventListener("click", () => contactModal.classList.remove("hidden"));
-      closeModalBtn.addEventListener("click", () => contactModal.classList.add("hidden"));
-      contactModal.addEventListener("click", (e) => {
-        if(e.target === contactModal) contactModal.classList.add("hidden");
-      });
-
-      // Resize textarea
-      input.addEventListener("input", autoResize);
-      function autoResize() {
-        input.style.height = "40px";
-        input.style.height = Math.min(input.scrollHeight, 140) + "px";
-      }
-
-      // Send on Enter except Shift+Enter
-      input.addEventListener("keydown", function (e) {
-        if (e.key === "Enter" && !e.shiftKey) {
-          e.preventDefault();
-          form.requestSubmit();
+      const sendBtn = document.getElementById("send-btn");
+      const emptyState = document.getElementById("empty-state");
+      
+      // Auto-grow textarea
+      input.addEventListener("input", function() {
+        this.style.height = "auto";
+        this.style.height = (this.scrollHeight) + "px";
+        
+        if(this.value.trim().length > 0) {
+          sendBtn.removeAttribute("disabled");
+        } else {
+          sendBtn.setAttribute("disabled", "true");
         }
       });
 
-      // Handle form submit & API call
+      // Glow Burst Ripple Function
+      function spawnRipple(e, el, color) {
+        const rect = el.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height) * 1.2;
+        const ripple = document.createElement('span');
+        ripple.className = 'ripple';
+        ripple.style.background = `radial-gradient(circle, ${color} 0%, transparent 70%)`;
+        ripple.style.width = ripple.style.height = `${size}px`;
+        ripple.style.left = `${e.clientX - rect.left - size / 2}px`;
+        ripple.style.top = `${e.clientY - rect.top - size / 2}px`;
+        el.appendChild(ripple);
+        ripple.addEventListener('animationend', () => ripple.remove());
+      }
+
+      // Attach Ripple to elements
+      document.addEventListener('pointerdown', (e) => {
+        const targetBlue = e.target.closest('.btn-glow-blue');
+        if(targetBlue && !targetBlue.disabled) spawnRipple(e, targetBlue, 'rgba(0,122,255,0.35)');
+
+        const targetWhite = e.target.closest('.btn-glow-white');
+        if(targetWhite && !targetWhite.disabled) spawnRipple(e, targetWhite, 'rgba(255,255,255,0.55)');
+      });
+
+      // Handle suggestion pills
+      document.querySelectorAll(".suggestion-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          input.value = btn.textContent.trim();
+          input.dispatchEvent(new Event('input'));
+          input.focus();
+        });
+      });
+
+      // Send on Enter
+      input.addEventListener("keydown", function(e) {
+        if (e.key === "Enter" && !e.shiftKey) {
+          e.preventDefault();
+          if(input.value.trim().length > 0) form.requestSubmit();
+        }
+      });
+
       form.addEventListener("submit", async (e) => {
         e.preventDefault();
         const text = input.value.trim();
         if (!text) return;
 
-        appendMessage(text, "user");
+        if(emptyState) emptyState.style.display = "none";
+        appendUserMessage(text);
+        
         input.value = "";
-        autoResize();
+        input.style.height = "auto";
+        sendBtn.setAttribute("disabled", "true");
+
+        const typingId = appendTypingIndicator();
 
         try {
           const apiUrl = window.location.protocol === 'file:' 
@@ -169,60 +199,145 @@
           });
 
           const data = await res.json();
-          const reply = data.answer
-            ? data.answer + (data.disclaimer ? "\n\n" + data.disclaimer : "")
-            : "⚠️ No reply.";
-          appendMessage(reply, "bot");
+          const reply = data.answer || "⚠️ No reply.";
+          
+          removeTypingIndicator(typingId);
+          appendBotMessage(reply);
+          
         } catch (err) {
           console.error(err);
-          appendMessage("⚠️ Error: Could not connect to backend.", "bot");
+          removeTypingIndicator(typingId);
+          appendBotMessage("⚠️ Error: Could not connect to backend.");
         }
       });
 
-      // Add messages to chat
-      function appendMessage(text, sender) {
+      function appendUserMessage(text) {
         const wrapper = document.createElement("div");
-        wrapper.className =
-          "flex items-start gap-3" +
-          (sender === "user" ? " flex-row-reverse" : "");
-
-        let avatar;
-        if (sender === "user") {
-          // User icon stays as "U"
-          avatar = document.createElement("div");
-          avatar.className =
-            "rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 w-8 h-8 flex items-center justify-center text-white font-bold text-sm";
-          avatar.textContent = "U";
-        } else {
-          // AI icon is always PNG
-          avatar = document.createElement("div");
-          avatar.className = "w-10 h-10 rounded-full overflow-hidden";
-          const img = document.createElement("img");
-          img.src = "icons/letter-n-svgrepo-com (3).png"; //
-          img.alt = "AI Logo";
-          img.className = "ai-icon";
-          avatar.appendChild(img);
-        }
-
+        wrapper.className = "flex justify-end w-full bubble-enter";
+        
         const bubble = document.createElement("div");
-        bubble.className =
-          "p-3 rounded-2xl text-sm leading-relaxed max-w-[75%] shadow-sm whitespace-pre-wrap";
-
-        if (sender === "user") {
-          bubble.style.backgroundColor = "#9EC6F3"; // user bubble
-          bubble.style.color = "#000";
-        } else {
-          bubble.style.backgroundColor = "#F5EFE6"; // AI bubble
-          bubble.style.color = "#000";
-        }
-
+        bubble.className = "msg-user";
         bubble.textContent = text;
+        
+        wrapper.appendChild(bubble);
+        chat.appendChild(wrapper);
+        scrollToBottom();
+      }
 
+      function appendBotMessage(text) {
+        const wrapper = document.createElement("div");
+        wrapper.className = "flex items-end gap-2 w-full bubble-enter";
+        
+        const avatar = document.createElement("div");
+        avatar.className = "w-7 h-7 rounded-full bot-avatar flex-shrink-0 flex items-center justify-center text-white mb-[22px] shadow-sm";
+        avatar.innerHTML = '<i class="ri-heart-pulse-fill text-[14px]"></i>';
+        
+        const bubbleContainer = document.createElement("div");
+        bubbleContainer.className = "flex flex-col gap-1 w-full max-w-[70%]";
+        
+        const bubble = document.createElement("div");
+        bubble.className = "msg-bot max-w-full";
+        bubble.textContent = text;
+        
+        const timestamp = document.createElement("span");
+        timestamp.className = "text-callout text-[var(--color-label-tertiary)] ml-2 mt-1";
+        const now = new Date();
+        timestamp.textContent = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        
+        bubbleContainer.appendChild(bubble);
+        bubbleContainer.appendChild(timestamp);
+        
+        wrapper.appendChild(avatar);
+        wrapper.appendChild(bubbleContainer);
+        chat.appendChild(wrapper);
+        scrollToBottom();
+      }
+
+      function appendTypingIndicator() {
+        const id = 'typing-' + Date.now();
+        const wrapper = document.createElement("div");
+        wrapper.id = id;
+        wrapper.className = "flex items-end gap-2 w-full bubble-enter";
+        
+        const avatar = document.createElement("div");
+        avatar.className = "w-7 h-7 rounded-full bot-avatar flex-shrink-0 flex items-center justify-center text-white mb-1 shadow-sm";
+        avatar.innerHTML = '<i class="ri-heart-pulse-fill text-[14px]"></i>';
+        
+        const bubble = document.createElement("div");
+        bubble.className = "msg-bot flex items-center gap-1.5 px-4 h-[42px] max-w-fit";
+        bubble.innerHTML = `
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+        `;
+        
         wrapper.appendChild(avatar);
         wrapper.appendChild(bubble);
         chat.appendChild(wrapper);
-        chat.scrollTop = chat.scrollHeight;
+        scrollToBottom();
+        
+        return id;
       }
+
+      function removeTypingIndicator(id) {
+        const el = document.getElementById(id);
+        if(el) el.remove();
+      }
+
+      function scrollToBottom() {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: 'smooth'
+        });
+      }
+
+      // --- Navbar Interactions ---
+      const mainNavbar = document.getElementById("main-navbar");
+      const newChatBtns = [document.getElementById("new-chat-btn"), document.getElementById("new-chat-btn-mobile")];
+      const mobileMenuBtn = document.getElementById("mobile-menu-btn");
+      const mobileDropdown = document.getElementById("mobile-dropdown");
+
+      // Mobile Menu Toggle
+      mobileMenuBtn.addEventListener("click", () => {
+        mobileDropdown.classList.toggle("hidden");
+        mobileDropdown.classList.toggle("flex");
+      });
+
+      // Close dropdown when clicking outside
+      document.addEventListener("click", (e) => {
+        if (!mobileMenuBtn.contains(e.target) && !mobileDropdown.contains(e.target)) {
+          mobileDropdown.classList.add("hidden");
+          mobileDropdown.classList.remove("flex");
+        }
+      });
+
+      // New Chat Trigger (Pulse Flash)
+      newChatBtns.forEach(btn => {
+        if(!btn) return;
+        btn.addEventListener("click", () => {
+          const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+          mainNavbar.classList.add("navbar--pulse");
+
+          // Reset Chat Stream
+          const messages = chat.querySelectorAll('.bubble-enter, .flex.justify-end, .flex.items-end');
+          messages.forEach(msg => {
+            if(msg.id !== 'empty-state') msg.remove();
+          });
+
+          if(emptyState) {
+            emptyState.style.display = "flex";
+            emptyState.classList.remove("animate-[slideUpFade_0.5s_ease-out]");
+            void emptyState.offsetWidth; // trigger reflow
+            emptyState.classList.add("animate-[slideUpFade_0.5s_ease-out]");
+          }
+
+          const holdDuration = prefersReducedMotion ? 200 : 500;
+          setTimeout(() => {
+            mainNavbar.classList.remove("navbar--pulse");
+          }, holdDuration);
+        });
+      });
     </script>
   </body>
 </html>

@@ -1,1 +1,295 @@
 @import "tailwindcss";
+
+@theme {
+  --color-bg-primary: #FFFFFF;
+  --color-bg-secondary: #F5F5F7;
+  --color-bg-card: #FFFFFF;
+  --color-bg-elevated: rgba(255, 255, 255, 0.72);
+
+  --color-label-primary: #1D1D1F;
+  --color-label-secondary: #6E6E73;
+  --color-label-tertiary: #86868B;
+  --color-text-on-accent: #FFFFFF;
+
+  --color-apple-blue: #007AFF;
+  --color-apple-blue-hover: #0066D6;
+  --color-accent-purple: #5856D6;
+
+  --color-border-light: rgba(0, 0, 0, 0.08);
+  --color-divider: rgba(0, 0, 0, 0.06);
+
+  --shadow-apple-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-apple-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+  --shadow-apple-lg: 0 12px 32px rgba(0, 0, 0, 0.12);
+
+  --radius-apple-sm: 12px;
+  --radius-apple-md: 16px;
+  --radius-apple-lg: 20px;
+  --radius-apple-xl: 28px;
+  --radius-apple-pill: 999px;
+
+  /* Navbar Solid Flat Spec */
+  --navbar-solid: var(--color-apple-blue);
+  --navbar-text-primary: #FFFFFF;
+  --navbar-text-secondary: rgba(255, 255, 255, 0.82);
+  --navbar-text-weight-primary: 600;
+  --navbar-text-weight-secondary: 500;
+  --navbar-letter-spacing: 0.01em;
+
+  --font-system: "Zalando Sans", "Inter", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "SF Mono", ui-monospace, "Menlo", monospace;
+}
+
+[data-theme="dark"] {
+  --color-bg-primary: #000000;
+  --color-bg-secondary: #1C1C1E;
+  --color-bg-card: #1C1C1E;
+  --color-bg-elevated: rgba(28, 28, 30, 0.72);
+
+  --color-label-primary: #F5F5F7;
+  --color-label-secondary: #A1A1A6;
+  --color-label-tertiary: #8E8E93;
+
+  --color-apple-blue: #0A84FF;
+  --color-apple-blue-hover: #2E96FF;
+  --color-accent-purple: #5E5CE6;
+
+  --color-border-light: rgba(255, 255, 255, 0.10);
+  --color-divider: rgba(255, 255, 255, 0.08);
+
+  --shadow-apple-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-apple-md: 0 4px 16px rgba(0, 0, 0, 0.45);
+  --shadow-apple-lg: 0 12px 32px rgba(0, 0, 0, 0.55);
+
+  /* Navbar stays solid Apple Blue in dark mode too */
+  --navbar-solid: var(--color-apple-blue);
+}
+
+body {
+  font-family: var(--font-system);
+  background-color: var(--color-bg-secondary);
+  color: var(--color-label-primary);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Typography Scale (Neutral Surfaces) */
+.text-large-title { font-size: 34px; font-weight: 700; letter-spacing: -0.02em; }
+.text-title-1 { font-size: 28px; font-weight: 700; letter-spacing: -0.02em; }
+.text-headline { font-size: 17px; font-weight: 600; }
+.text-body { font-size: 17px; font-weight: 400; }
+.text-callout { font-size: 15px; font-weight: 400; }
+.text-footnote { font-size: 13px; font-weight: 400; }
+.text-caption { font-size: 11px; font-weight: 500; letter-spacing: 0.01em; }
+
+/* Press Scale */
+.btn, .nav-link, .icon-btn, .suggestion-btn, .btn-primary, .btn-send {
+  transition: transform 150ms cubic-bezier(0.34, 1.56, 0.64, 1),
+              background 150ms cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 150ms cubic-bezier(0.34, 1.56, 0.64, 1),
+              color 150ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.btn:active, .nav-link:active, .icon-btn:active, .suggestion-btn:active, .btn-primary:active, .btn-send:active:not(:disabled) {
+  transform: scale(0.94);
+}
+
+/* Glow-burst Ripple */
+.btn-glow, .btn-glow-blue, .btn-glow-white {
+  position: relative;
+  overflow: hidden;
+}
+.btn-glow .ripple, .btn-glow-blue .ripple, .btn-glow-white .ripple {
+  position: absolute;
+  border-radius: 50%;
+  transform: scale(0);
+  pointer-events: none;
+  animation: rippleBurst 480ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+@keyframes rippleBurst {
+  to { transform: scale(2.6); opacity: 0; }
+}
+
+/* Components */
+.apple-navbar {
+  background: var(--navbar-solid);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.10);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+}
+
+.navbar--pulse::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.12);
+  animation: navFlash 420ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  pointer-events: none;
+}
+@keyframes navFlash {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .apple-navbar { transition: none; }
+  .navbar--pulse::after { animation: none; opacity: 1; }
+}
+
+/* Contrast-Aware Navbar Typography */
+.apple-navbar .nav-link {
+  font-size: 14px;
+  font-weight: var(--navbar-text-weight-secondary); /* 500 */
+  color: var(--navbar-text-secondary);
+  letter-spacing: var(--navbar-letter-spacing);
+  padding: 8px 12px;
+  border-radius: var(--radius-apple-sm);
+  text-decoration: none;
+  cursor: pointer;
+}
+.apple-navbar .nav-link:hover {
+  color: var(--navbar-text-primary);
+  background-color: rgba(255,255,255,0.14);
+}
+
+.apple-navbar .text-headline {
+  font-size: 17px;
+  font-weight: var(--navbar-text-weight-primary); /* 600 */
+  color: var(--navbar-text-primary);
+  letter-spacing: var(--navbar-letter-spacing);
+}
+
+.btn-primary {
+  background: #FFFFFF;
+  color: var(--color-apple-blue);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 18px;
+  border-radius: var(--radius-apple-pill);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  white-space: nowrap;
+}
+.btn-primary:hover {
+  background: rgba(255,255,255,0.92);
+  transform: translateY(-1px);
+}
+.btn-primary-mobile {
+  padding: 0;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dropdown-menu {
+  background: var(--color-bg-card);
+  border-radius: var(--radius-apple-md);
+  box-shadow: var(--shadow-apple-md);
+  border: 1px solid var(--color-border-light);
+}
+
+.dropdown-menu .nav-link {
+  color: var(--color-label-primary);
+  font-weight: 500;
+}
+
+.msg-user {
+  background-color: var(--color-apple-blue);
+  color: var(--color-text-on-accent);
+  border-radius: 18px 18px 4px 18px;
+  padding: 10px 16px;
+  max-width: 70%;
+  margin-left: auto;
+}
+
+.msg-bot {
+  background-color: var(--color-bg-card);
+  border: 1px solid var(--color-border-light);
+  color: var(--color-label-primary);
+  border-radius: 18px 18px 18px 4px;
+  padding: 10px 16px;
+  max-width: 70%;
+  box-shadow: var(--shadow-apple-sm);
+}
+
+.bot-avatar {
+  background: linear-gradient(135deg, var(--color-apple-blue), var(--color-accent-purple));
+}
+
+.input-bar-fade {
+  background: linear-gradient(transparent, var(--color-bg-secondary) 40%);
+}
+
+.input-pill {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-apple-xl);
+  box-shadow: var(--shadow-apple-lg);
+  min-height: 52px;
+  padding: 8px 8px 8px 20px;
+}
+
+.input-pill:focus-within {
+  border-color: var(--color-apple-blue);
+  box-shadow: 0 0 0 4px rgba(0,122,255,0.12), var(--shadow-apple-lg);
+}
+
+.btn-send {
+  background: var(--color-apple-blue);
+  color: #fff;
+}
+.btn-send:hover:not(:disabled) {
+  background: var(--color-apple-blue-hover);
+  transform: scale(1.04);
+}
+.btn-send:disabled {
+  background: var(--color-bg-secondary);
+  color: var(--color-label-tertiary);
+  cursor: not-allowed;
+  transform: scale(1);
+}
+
+.bubble-enter {
+  animation: slideUpFade 220ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes slideUpFade {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Typing Indicator */
+.typing-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--color-label-tertiary);
+  animation: typingPulse 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) infinite;
+}
+.typing-dot:nth-child(2) { animation-delay: 0.15s; }
+.typing-dot:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes typingPulse {
+  0%, 100% { transform: scale(0.8); opacity: 0.5; }
+  50% { transform: scale(1.2); opacity: 1; }
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-border-light);
+  border-radius: 999px;
+}
