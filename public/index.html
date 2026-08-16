@@ -34,7 +34,7 @@
             </button>
             <div class="flex items-center gap-[8px]">
               <a href="#" class="nav-link">About</a>
-              <a href="#" class="nav-link">Contact</a>
+              <a href="#" class="nav-link contact-trigger">Contact</a>
             </div>
           </div>
 
@@ -49,7 +49,7 @@
             <!-- Dropdown -->
             <div id="mobile-dropdown" class="absolute top-[40px] right-0 w-[150px] dropdown-menu hidden flex-col p-2 gap-1 z-50">
               <a href="#" class="nav-link w-full text-left" style="color:var(--color-label-secondary);">About</a>
-              <a href="#" class="nav-link w-full text-left" style="color:var(--color-label-secondary);">Contact</a>
+              <a href="#" class="nav-link contact-trigger w-full text-left" style="color:var(--color-label-secondary);">Contact</a>
             </div>
           </div>
         </div>
@@ -113,6 +113,23 @@
         <a href="#" class="hover:underline">Terms</a>
       </div>
     </footer>
+
+    <!-- Contact Modal -->
+    <div id="contact-modal" class="contact-modal-overlay fixed inset-0 z-[200] flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300">
+      <div class="card relative">
+        <button id="close-contact-modal" class="absolute top-4 right-4 text-[var(--color-label-secondary)] hover:text-[var(--color-label-primary)] transition-colors">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+        <h2 class="card__title">Contact Us</h2>
+        <p class="card__content">We'd love to hear from you.</p>
+        <form class="card__form">
+          <input type="text" placeholder="Name" required />
+          <input type="email" placeholder="Email" required />
+          <textarea placeholder="Message" rows="3" required></textarea>
+          <button type="submit" class="sign-up">Send Message</button>
+        </form>
+      </div>
+    </div>
 
     <!-- JavaScript -->
     <script>
@@ -310,10 +327,38 @@
       });
 
       // Close dropdown when clicking outside
-      document.addEventListener("click", (e) => {
-        if (!mobileMenuBtn.contains(e.target) && !mobileDropdown.contains(e.target)) {
+      document.addEventListener('click', (e) => {
+        if (!mobileDropdown.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
           mobileDropdown.classList.add("hidden");
           mobileDropdown.classList.remove("flex");
+        }
+      });
+
+      // --- Contact Modal ---
+      const contactModal = document.getElementById("contact-modal");
+      const closeContactModal = document.getElementById("close-contact-modal");
+      const contactTriggers = document.querySelectorAll(".contact-trigger");
+
+      contactTriggers.forEach(trigger => {
+        trigger.addEventListener('click', (e) => {
+          e.preventDefault();
+          contactModal.classList.remove("opacity-0", "pointer-events-none");
+          contactModal.classList.add("opacity-100", "active");
+          // Close mobile menu if open
+          mobileDropdown.classList.add("hidden");
+          mobileDropdown.classList.remove("flex");
+        });
+      });
+
+      closeContactModal.addEventListener('click', () => {
+        contactModal.classList.remove("opacity-100", "active");
+        contactModal.classList.add("opacity-0", "pointer-events-none");
+      });
+
+      contactModal.addEventListener('click', (e) => {
+        if (e.target === contactModal) {
+          contactModal.classList.remove("opacity-100", "active");
+          contactModal.classList.add("opacity-0", "pointer-events-none");
         }
       });
 

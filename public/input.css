@@ -293,3 +293,86 @@ body {
   background-color: var(--color-border-light);
   border-radius: 999px;
 }
+
+/* Contact Card - From Uiverse.io by satyamchaudharydev */ 
+.contact-modal-overlay {
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+}
+
+.card {
+  width: 320px;
+  padding: 24px 20px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 12px;
+  background: var(--color-bg-card);
+  border-radius: 20px;
+  box-shadow: var(--shadow-apple-lg);
+  border: 1px solid var(--color-border-light);
+  transform: scale(0.95);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.contact-modal-overlay.active .card {
+  transform: scale(1);
+}
+
+.card > * {
+  margin: 0;
+}
+
+.card__title {
+  font-size: 23px;
+  font-weight: 900;
+  color: var(--color-label-primary);
+}
+
+.card__content {
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--color-label-secondary);
+}
+
+.card__form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.card__form input, .card__form textarea {
+  margin-top: 10px;
+  outline: 0;
+  background: var(--color-bg-primary);
+  box-shadow: transparent 0px 0px 0px 1px inset;
+  padding: 0.6em;
+  border-radius: 14px;
+  border: 1px solid var(--color-border-light);
+  color: var(--color-label-primary);
+  font-family: var(--font-system);
+  width: 100%;
+  resize: none;
+}
+
+.card__form input:focus, .card__form textarea:focus {
+  border-color: var(--color-apple-blue);
+}
+
+.card__form button {
+  border: 0;
+  background: var(--color-label-primary);
+  color: var(--color-bg-primary);
+  padding: 0.68em;
+  border-radius: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+.sign-up:hover {
+  opacity: 0.8;
+}
