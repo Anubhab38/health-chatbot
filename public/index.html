@@ -8,8 +8,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Zalando+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
-    <!-- Remix Icon -->
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23007AFF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.48 12H2'/%3E%3C/svg%3E">
     <link rel="stylesheet" href="output.css" />
   </head>
   <body class="flex flex-col min-h-screen">
@@ -19,7 +20,7 @@
       <div class="w-full px-6 h-[56px] flex items-center justify-between relative z-10">
         <div class="flex items-center gap-2 shrink-0">
           <div class="w-[26px] h-[26px] rounded-[12px] bg-[rgba(255,255,255,0.18)] flex items-center justify-center text-white">
-            <i class="ri-heart-pulse-fill text-[14px]"></i>
+            <i data-lucide="activity" class="w-[14px] h-[14px]"></i>
           </div>
           <span class="text-headline">HEALTH-MITRA</span>
         </div>
@@ -28,7 +29,7 @@
           <!-- Desktop Nav Links -->
           <div class="hidden md:flex items-center gap-[20px]">
             <button id="new-chat-btn" class="btn-primary btn-glow-blue">
-              <i class="ri-add-line text-[16px]"></i>
+              <i data-lucide="plus" class="w-[16px] h-[16px]"></i>
               <span>New Chat</span>
             </button>
             <div class="flex items-center gap-[8px]">
@@ -40,10 +41,10 @@
           <!-- Mobile Nav (Dropdown + Icon Button) -->
           <div class="flex md:hidden items-center gap-2 relative">
             <button id="new-chat-btn-mobile" class="btn-primary btn-primary-mobile btn-glow-blue">
-              <i class="ri-add-line text-[20px]"></i>
+              <i data-lucide="plus" class="w-[20px] h-[20px]"></i>
             </button>
             <button id="mobile-menu-btn" class="icon-btn w-8 h-8 flex items-center justify-center rounded-full text-[rgba(255,255,255,0.82)] hover:bg-[rgba(255,255,255,0.14)] hover:text-white transition-colors">
-              <i class="ri-more-2-fill text-[20px]"></i>
+              <i data-lucide="more-vertical" class="w-[20px] h-[20px]"></i>
             </button>
             <!-- Dropdown -->
             <div id="mobile-dropdown" class="absolute top-[40px] right-0 w-[150px] dropdown-menu hidden flex-col p-2 gap-1 z-50">
@@ -61,8 +62,8 @@
         
         <!-- Empty State (shown initially) -->
         <div id="empty-state" class="flex flex-col items-center justify-center mt-12 mb-8 animate-[slideUpFade_0.5s_ease-out]">
-          <div class="w-16 h-16 rounded-full bot-avatar mb-4 flex items-center justify-center text-white shadow-md">
-            <i class="ri-heart-pulse-fill text-3xl"></i>
+          <div class="w-16 h-16 rounded-full bot-avatar flex items-center justify-center text-white mb-6 shadow-[0_8px_24px_rgba(88,86,214,0.35)]">
+            <i data-lucide="activity" class="w-8 h-8"></i>
           </div>
           <h1 class="text-large-title text-center mb-6">How can I help you today?</h1>
           <div class="flex flex-wrap justify-center gap-2 max-w-lg">
@@ -92,7 +93,7 @@
             ></textarea>
 
             <button type="submit" id="send-btn" disabled class="btn-send btn-glow-white w-[36px] h-[36px] rounded-full flex items-center justify-center shrink-0">
-              <i class="ri-arrow-up-line text-lg"></i>
+              <i data-lucide="arrow-up" class="w-[18px] h-[18px]"></i>
             </button>
           </form>
           <div class="text-center mt-3">
@@ -115,6 +116,9 @@
 
     <!-- JavaScript -->
     <script>
+      // Initialize Lucide Icons
+      lucide.createIcons();
+
       const form = document.getElementById("chat-form");
       const input = document.getElementById("chat-input");
       const chat = document.getElementById("chat-container");
@@ -230,7 +234,7 @@
         
         const avatar = document.createElement("div");
         avatar.className = "w-7 h-7 rounded-full bot-avatar flex-shrink-0 flex items-center justify-center text-white mb-[22px] shadow-sm";
-        avatar.innerHTML = '<i class="ri-heart-pulse-fill text-[14px]"></i>';
+        avatar.innerHTML = '<i data-lucide="activity" class="w-[14px] h-[14px]"></i>';
         
         const bubbleContainer = document.createElement("div");
         bubbleContainer.className = "flex flex-col gap-1 w-full max-w-[70%]";
@@ -250,6 +254,7 @@
         wrapper.appendChild(avatar);
         wrapper.appendChild(bubbleContainer);
         chat.appendChild(wrapper);
+        lucide.createIcons();
         scrollToBottom();
       }
 
@@ -261,7 +266,7 @@
         
         const avatar = document.createElement("div");
         avatar.className = "w-7 h-7 rounded-full bot-avatar flex-shrink-0 flex items-center justify-center text-white mb-1 shadow-sm";
-        avatar.innerHTML = '<i class="ri-heart-pulse-fill text-[14px]"></i>';
+        avatar.innerHTML = '<i data-lucide="activity" class="w-[14px] h-[14px]"></i>';
         
         const bubble = document.createElement("div");
         bubble.className = "msg-bot flex items-center gap-1.5 px-4 h-[42px] max-w-fit";
@@ -274,6 +279,7 @@
         wrapper.appendChild(avatar);
         wrapper.appendChild(bubble);
         chat.appendChild(wrapper);
+        lucide.createIcons();
         scrollToBottom();
         
         return id;
