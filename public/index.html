@@ -10,7 +10,8 @@
       type="image/png"
       href="icons/letter-n-svgrepo-com (3).png"
     />
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Local Tailwind CSS -->
+    <link rel="stylesheet" href="output.css" />
     <style>
       @import url("https://fonts.googleapis.com/css2?family=Martel+Sans:wght@200;300;400;600;700;800;900&family=Mozilla+Text:wght@200..700&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
 
@@ -42,12 +43,27 @@
     <header
       class="sticky top-0 z-20 w-full bg-white border-b border-gray-200 shadow-sm"
     >
-      <div class="max-w-3xl mx-auto px-4 py-3 flex items-center justify-center">
-        <span class="text-xl font-bold" style="color: #8a82dd"
-          >NANITE</span
-        >
+      <div class="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between">
+        <span class="text-xl font-bold" style="color: #8a82dd">NANITE</span>
+        <div class="flex items-center gap-4">
+          <button id="contact-btn" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition">Contact</button>
+          <button id="login-btn" class="text-sm font-medium px-4 py-1.5 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:opacity-90 transition shadow-sm">Login</button>
+        </div>
       </div>
     </header>
+
+    <!-- Contact Modal -->
+    <div id="contact-modal" class="fixed inset-0 bg-black/40 z-30 hidden flex items-center justify-center backdrop-blur-sm">
+      <div class="bg-white rounded-2xl p-6 shadow-xl max-w-sm w-full mx-4 border border-gray-100">
+        <h3 class="text-xl font-bold text-gray-900 mb-2">Contact Us</h3>
+        <p class="text-sm text-gray-600 mb-4">For any health inquiries or support, please reach out to our team.</p>
+        <div class="bg-gray-50 rounded-lg p-3 mb-6">
+          <p class="text-sm font-medium text-gray-800 mb-1">📧 support@nanitehealth.in</p>
+          <p class="text-sm font-medium text-gray-800">📞 +91 98765 43210</p>
+        </div>
+        <button id="close-modal-btn" class="w-full py-2 bg-gray-100 text-gray-800 rounded-lg hover:bg-gray-200 transition font-medium">Close</button>
+      </div>
+    </div>
 
     <!-- Chat Section -->
     <main class="flex flex-1 flex-col items-center px-2 md:px-0">
@@ -75,10 +91,10 @@
     <!-- Input Box -->
     <form
       id="chat-form"
-      class="fixed bottom-0 left-0 w-full flex justify-center pb-4 bg-gradient-to-b from-transparent to-white z-10"
+      class="fixed bottom-0 left-0 w-full flex flex-col items-center pb-2 bg-gradient-to-b from-transparent to-white z-10"
     >
       <div
-        class="w-full max-w-3xl flex bg-white rounded-2xl p-2 shadow-md border border-gray-200"
+        class="w-full max-w-3xl flex bg-white rounded-2xl p-2 shadow-md border border-gray-200 mb-2"
       >
         <textarea
           id="chat-input"
@@ -96,6 +112,7 @@
           Send
         </button>
       </div>
+      <p class="text-[11px] text-gray-400 font-medium tracking-wide">Nanite Health Assistant AI. Please consult a doctor for medical advice.</p>
     </form>
 
     <!-- Script -->
@@ -103,6 +120,17 @@
       const form = document.getElementById("chat-form");
       const input = document.getElementById("chat-input");
       const chat = document.getElementById("chat-container");
+
+      // Modal Logic
+      const contactBtn = document.getElementById("contact-btn");
+      const contactModal = document.getElementById("contact-modal");
+      const closeModalBtn = document.getElementById("close-modal-btn");
+
+      contactBtn.addEventListener("click", () => contactModal.classList.remove("hidden"));
+      closeModalBtn.addEventListener("click", () => contactModal.classList.add("hidden"));
+      contactModal.addEventListener("click", (e) => {
+        if(e.target === contactModal) contactModal.classList.add("hidden");
+      });
 
       // Resize textarea
       input.addEventListener("input", autoResize);
@@ -130,7 +158,11 @@
         autoResize();
 
         try {
-          const res = await fetch("/api/message", {
+          const apiUrl = window.location.protocol === 'file:' 
+            ? "http://127.0.0.1:4000/api/message" 
+            : "/api/message";
+            
+          const res = await fetch(apiUrl, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ text }),
