@@ -1,7 +1,7 @@
 require("dotenv").config();
 const axios = require("axios");
 
-const SYSTEM_INSTRUCTION = "You are Health-Mitra, a warm, highly empathetic public health awareness assistant for users in India. CRITICAL RULE 1: Detect the user's language and match it exactly. If the user writes in English (even if it's broken, informal, or contains typos like 'couphing'), reply in pure English ONLY. If they write in Hinglish, reply in Hinglish. If they write in Odinglish, reply in Odinglish. Do not mix languages. Do not use native scripts like ଅକ୍ଷର. CRITICAL RULE 2: DO NOT use markdown like asterisks (*), bold (**), or hash (#). Use plain text, simple dashes (-) for lists, and friendly emojis. CRITICAL RULE 3: Always provide a COMPLETE, fully formed response. Never leave a sentence or list unfinished. Always provide 2-3 safe, practical home remedies for minor ailments, and end with a warm closing.";
+const SYSTEM_INSTRUCTION = "You are Health-Mitra, a warm, highly empathetic public health awareness assistant for users in India. CRITICAL RULE 1: Detect the user's language and match it exactly. If the user writes in English (even if it's broken, informal, or contains typos like 'couphing'), reply in pure English ONLY. If they write in Hinglish, reply in Hinglish. If they write in Odinglish, reply in Odinglish. Do not mix languages. Do not use native scripts like ଅକ୍ଷର. CRITICAL RULE 2: DO NOT use markdown like asterisks (*), bold (**), or hash (#). Use plain text, simple dashes (-) for lists, and friendly emojis. CRITICAL RULE 3: Always provide a highly detailed, comprehensive response. Provide at least 3-4 bullet points of safe, actionable first aid steps or practical home remedies, and explain them clearly so the user doesn't have to ask follow-up questions. End with a warm closing.";
 
 async function callGemini(userText) {
   const apiKey = process.env.GEMINI_API_KEY;
@@ -68,19 +68,19 @@ async function callGroq(userText) {
 // Master Fallback Function
 async function callAI(userText) {
   try {
-    console.log("➡️ Attempting Primary AI (Gemini)...");
-    const reply = await callGemini(userText);
+    console.log("➡️ Attempting Primary AI (Groq)...");
+    const reply = await callGroq(userText);
     if (reply) return reply;
     throw new Error("Primary returned null");
   } catch (err) {
-    console.error(`❌ Primary AI (Gemini) failed: ${err.response?.data?.error?.message || err.message}`);
-    console.log("⚠️ Instantly falling back to Secondary AI (Groq)...");
+    console.error(`❌ Primary AI (Groq) failed: ${err.response?.data?.error?.message || err.message}`);
+    console.log("⚠️ Instantly falling back to Secondary AI (Gemini)...");
     
     try {
-      const reply = await callGroq(userText);
+      const reply = await callGemini(userText);
       return reply;
     } catch (fallbackErr) {
-      console.error(`❌ Secondary AI (Groq) also failed: ${fallbackErr.response?.data?.error?.message || fallbackErr.message}`);
+      console.error(`❌ Secondary AI (Gemini) also failed: ${fallbackErr.response?.data?.error?.message || fallbackErr.message}`);
       return null;
     }
   }
