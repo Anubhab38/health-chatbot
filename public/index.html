@@ -122,11 +122,15 @@
         </button>
         <h2 class="card__title">Contact Us</h2>
         <p class="card__content">We'd love to hear from you.</p>
-        <form class="card__form">
-          <input type="text" placeholder="Name" required />
-          <input type="email" placeholder="Email" required />
-          <textarea placeholder="Message" rows="3" required></textarea>
-          <button type="submit" class="sign-up">Send Message</button>
+        <form class="card__form" id="web3-contact-form">
+          <input type="hidden" name="access_key" value="73d41410-4a73-4e01-b938-d268fd306168" />
+          <input type="text" name="name" placeholder="Name" required />
+          <input type="email" name="email" placeholder="Email" required />
+          <textarea name="message" placeholder="Message" rows="3" required></textarea>
+          <button type="submit" id="contact-submit-btn" class="sign-up flex items-center justify-center gap-2 transition-all">
+            <span>Send Message</span>
+          </button>
+          <div id="contact-result" class="text-sm mt-1 hidden font-semibold"></div>
         </form>
       </div>
     </div>
@@ -360,6 +364,66 @@
           contactModal.classList.remove("opacity-100", "active");
           contactModal.classList.add("opacity-0", "pointer-events-none");
         }
+      });
+
+      // --- Web3Forms Submission ---
+      const contactForm = document.getElementById('web3-contact-form');
+      const contactResult = document.getElementById('contact-result');
+      const contactSubmitBtn = document.getElementById('contact-submit-btn');
+
+      contactForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        contactSubmitBtn.disabled = true;
+        contactSubmitBtn.innerHTML = '<i data-lucide="loader-circle" class="w-4 h-4 animate-spin"></i><span>Sending...</span>';
+        lucide.createIcons();
+        
+        contactResult.classList.add('hidden');
+        contactResult.classList.remove('text-[var(--color-apple-blue)]', 'text-red-500');
+
+        const formData = new FormData(contactForm);
+        const object = Object.fromEntries(formData);
+        const json = JSON.stringify(object);
+
+        fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: json
+        })
+        .then(async (response) => {
+          let jsonResponse = await response.json();
+          if (response.status === 200) {
+            contactResult.innerHTML = "Message sent successfully!";
+            contactResult.classList.add('text-[var(--color-apple-blue)]');
+            contactResult.classList.remove('hidden');
+            contactForm.reset();
+            
+            // Auto close modal after 2 seconds
+            setTimeout(() => {
+              contactModal.classList.remove("opacity-100", "active");
+              contactModal.classList.add("opacity-0", "pointer-events-none");
+              contactResult.classList.add('hidden');
+            }, 2000);
+          } else {
+            console.log(response);
+            contactResult.innerHTML = jsonResponse.message || "Something went wrong!";
+            contactResult.classList.add('text-red-500');
+            contactResult.classList.remove('hidden');
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          contactResult.innerHTML = "Something went wrong!";
+          contactResult.classList.add('text-red-500');
+          contactResult.classList.remove('hidden');
+        })
+        .finally(() => {
+          contactSubmitBtn.disabled = false;
+          contactSubmitBtn.innerHTML = '<span>Send Message</span>';
+        });
       });
 
       // New Chat Trigger (Pulse Flash)
