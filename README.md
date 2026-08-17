@@ -2,6 +2,8 @@
 
 Health-Mitra is a sleek, AI-powered public health awareness chatbot designed specifically for users in India. It provides empathetic, multilingual, and practical health information, wrapped in a premium user interface.
 
+**🚀 Try it live:** [https://health-chatbot-m26y.onrender.com](https://health-chatbot-m26y.onrender.com)
+
 ## 🌟 Key Features
 
 ### 🎨 Premium UI/UX
