@@ -15,12 +15,12 @@ const app = express();
 app.use(helmet({
   contentSecurityPolicy: {
     directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "'unsafe-inline'", "https://cdnjs.cloudflare.com", "https://unpkg.com"],
-      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com", "https://cdn.jsdelivr.net"],
-      fontSrc: ["'self'", "https://fonts.gstatic.com", "https://cdn.jsdelivr.net"],
-      connectSrc: ["'self'", "https://api.web3forms.com"],
-      imgSrc: ["'self'", "data:", "blob:"],
+      "default-src": ["'self'"],
+      "script-src": ["'self'", "'unsafe-inline'", "https://cdnjs.cloudflare.com", "https://unpkg.com"],
+      "style-src": ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com", "https://cdn.jsdelivr.net"],
+      "font-src": ["'self'", "https://fonts.gstatic.com", "https://cdn.jsdelivr.net"],
+      "connect-src": ["'self'", "https://api.web3forms.com"],
+      "img-src": ["'self'", "data:", "blob:"],
     }
   }
 }));          // security headers

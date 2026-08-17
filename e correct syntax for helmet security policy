@@ -1,0 +1,30 @@
+[33mcommit a8f2ef3105d943f8172db5cd1013c15e3deb36c5[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: Anubhab <anubhabpatra4@gmail.com>
+Date:   Mon Aug 17 09:03:47 2026 +0530
+
+    fix: configure helmet content security policy
+
+[1mdiff --git a/src/app.js b/src/app.js[m
+[1mindex dc9f1ea..c9f5696 100644[m
+[1m--- a/src/app.js[m
+[1m+++ b/src/app.js[m
+[36m@@ -12,7 +12,18 @@[m [mconst { handleMessage } = require('./controllers/messagecontroller');[m
+ const app = express();[m
+ [m
+ // Middleware[m
+[31m-app.use(helmet());          // security headers[m
+[32m+[m[32mapp.use(helmet({[m
+[32m+[m[32m  contentSecurityPolicy: {[m
+[32m+[m[32m    directives: {[m
+[32m+[m[32m      defaultSrc: ["'self'"],[m
+[32m+[m[32m      scriptSrc: ["'self'", "'unsafe-inline'", "https://cdnjs.cloudflare.com", "https://unpkg.com"],[m
+[32m+[m[32m      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com", "https://cdn.jsdelivr.net"],[m
+[32m+[m[32m      fontSrc: ["'self'", "https://fonts.gstatic.com", "https://cdn.jsdelivr.net"],[m
+[32m+[m[32m      connectSrc: ["'self'", "https://api.web3forms.com"],[m
+[32m+[m[32m      imgSrc: ["'self'", "data:", "blob:"],[m
+[32m+[m[32m    }[m
+[32m+[m[32m  }[m
+[32m+[m[32m}));          // security headers[m
+ app.use(cors());            // allow cross-origin requests[m
+ app.use(express.json());    // parse JSON[m
+ app.use(morgan('dev'));     // request logging[m
