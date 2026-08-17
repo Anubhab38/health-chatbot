@@ -12,7 +12,18 @@ const { handleMessage } = require('./controllers/messagecontroller');
 const app = express();
 
 // Middleware
-app.use(helmet());          // security headers
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'", "https://cdnjs.cloudflare.com", "https://unpkg.com"],
+      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com", "https://cdn.jsdelivr.net"],
+      fontSrc: ["'self'", "https://fonts.gstatic.com", "https://cdn.jsdelivr.net"],
+      connectSrc: ["'self'", "https://api.web3forms.com"],
+      imgSrc: ["'self'", "data:", "blob:"],
+    }
+  }
+}));          // security headers
 app.use(cors());            // allow cross-origin requests
 app.use(express.json());    // parse JSON
 app.use(morgan('dev'));     // request logging
