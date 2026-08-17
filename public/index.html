@@ -37,15 +37,16 @@
           </div>
 
           <!-- Mobile Nav (Dropdown + Icon Button) -->
-          <div class="flex md:hidden items-center gap-2 relative">
-            <button id="new-chat-btn-mobile" class="btn-primary btn-primary-mobile btn-glow-blue">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-[20px] h-[20px]"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
-            </button>
-            <button id="mobile-menu-btn" class="icon-btn w-8 h-8 flex items-center justify-center rounded-full text-[rgba(255,255,255,0.82)] hover:bg-[rgba(255,255,255,0.14)] hover:text-white transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-[20px] h-[20px]"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+          <div class="flex md:hidden items-center relative">
+            <button id="mobile-menu-btn" class="icon-btn w-8 h-8 flex items-center justify-center rounded-md bg-white text-black hover:bg-gray-200 transition-colors shadow-sm">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu-icon lucide-menu w-[20px] h-[20px]"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/></svg>
             </button>
             <!-- Dropdown -->
             <div id="mobile-dropdown" class="absolute top-[40px] right-0 w-[150px] dropdown-menu hidden flex-col p-2 gap-1 z-50">
+              <a href="#" id="new-chat-btn-mobile" class="nav-link w-full text-left flex items-center gap-2" style="color:var(--color-apple-blue);">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+                New Chat
+              </a>
               <a href="#" class="nav-link about-trigger w-full text-left" style="color:var(--color-label-secondary);">About</a>
               <a href="#" class="nav-link contact-trigger w-full text-left" style="color:var(--color-label-secondary);">Contact</a>
             </div>
@@ -482,6 +483,10 @@
       newChatBtns.forEach(btn => {
         if(!btn) return;
         btn.addEventListener("click", () => {
+          // Close mobile menu if open
+          mobileDropdown.classList.add("hidden");
+          mobileDropdown.classList.remove("flex");
+
           const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
           mainNavbar.classList.add("navbar--pulse");

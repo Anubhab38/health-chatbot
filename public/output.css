@@ -9,8 +9,10 @@
     --font-mono: "SF Mono", ui-monospace, "Menlo", monospace;
     --color-red-500: oklch(63.7% 0.237 25.331);
     --color-yellow-500: oklch(79.5% 0.184 86.047);
+    --color-gray-200: oklch(92.8% 0.006 264.531);
     --color-gray-900: oklch(21% 0.034 264.665);
     --color-gray-950: oklch(13% 0.028 261.692);
+    --color-black: #000;
     --color-white: #fff;
     --spacing: 0.25rem;
     --container-lg: 32rem;
@@ -302,9 +304,6 @@
   .ml-2 {
     margin-left: calc(var(--spacing) * 2);
   }
-  .ml-4 {
-    margin-left: calc(var(--spacing) * 4);
-  }
   .contents {
     display: contents;
   }
@@ -530,6 +529,9 @@
   .bg-transparent {
     background-color: transparent;
   }
+  .bg-white {
+    background-color: var(--color-white);
+  }
   .p-2 {
     padding: calc(var(--spacing) * 2);
   }
@@ -608,9 +610,6 @@
   .whitespace-nowrap {
     white-space: nowrap;
   }
-  .text-\[rgba\(255\,255\,255\,0\.82\)\] {
-    color: rgba(255,255,255,0.82);
-  }
   .text-\[var\(--color-apple-blue\)\] {
     color: var(--color-apple-blue);
   }
@@ -620,14 +619,14 @@
   .text-\[var\(--color-label-tertiary\)\] {
     color: var(--color-label-tertiary);
   }
+  .text-black {
+    color: var(--color-black);
+  }
   .text-red-500 {
     color: var(--color-red-500);
   }
   .text-white {
     color: var(--color-white);
-  }
-  .text-yellow-500 {
-    color: var(--color-yellow-500);
   }
   .no-underline {
     text-decoration-line: none;
@@ -678,20 +677,14 @@
     outline-style: none;
   }
   @media (hover: hover) {
-    .group-hover\:text-yellow-500:is(:where(.group):hover *) {
-      color: var(--color-yellow-500);
-    }
-    .hover\:bg-\[rgba\(255\,255\,255\,0\.14\)\]:hover {
-      background-color: rgba(255,255,255,0.14);
+    .hover\:bg-gray-200:hover {
+      background-color: var(--color-gray-200);
     }
     .hover\:bg-gray-950:hover {
       background-color: var(--color-gray-950);
     }
     .hover\:text-\[var\(--color-label-primary\)\]:hover {
       color: var(--color-label-primary);
-    }
-    .hover\:text-white:hover {
-      color: var(--color-white);
     }
     .hover\:underline:hover {
       text-decoration-line: underline;
