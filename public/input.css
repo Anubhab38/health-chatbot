@@ -118,11 +118,6 @@ body {
   position: sticky;
   top: 0;
   z-index: 100;
-  height: 56px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 24px;
 }
 
 .navbar--pulse::after {
