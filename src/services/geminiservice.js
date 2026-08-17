@@ -14,7 +14,7 @@ async function callGemini(userText) {
   const payload = {
     system_instruction: { parts: { text: SYSTEM_INSTRUCTION } },
     contents: [ { parts: [{ text: userText }] } ],
-    generationConfig: { temperature: 0.6, maxOutputTokens: 800 },
+    generationConfig: { temperature: 0.6, maxOutputTokens: 4000 },
     safetySettings: [
       { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_NONE" },
       { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_NONE" },
@@ -46,13 +46,13 @@ async function callGroq(userText) {
   const url = "https://api.groq.com/openai/v1/chat/completions";
 
   const payload = {
-    model: "llama-3.3-70b-versatile",
+    model: "openai/gpt-oss-120b",
     messages: [
       { role: "system", content: SYSTEM_INSTRUCTION },
       { role: "user", content: userText }
     ],
     temperature: 0.6,
-    max_tokens: 800
+    max_tokens: 4000
   };
 
   const res = await axios.post(url, payload, {
