@@ -270,7 +270,7 @@
         wrapper.className = "flex justify-end w-full bubble-enter";
         
         const bubble = document.createElement("div");
-        bubble.className = "msg-user";
+        bubble.className = "msg-user whitespace-pre-wrap";
         bubble.textContent = text;
         
         wrapper.appendChild(bubble);
@@ -290,7 +290,7 @@
         bubbleContainer.className = "flex flex-col gap-1 w-full max-w-[70%]";
         
         const bubble = document.createElement("div");
-        bubble.className = "msg-bot max-w-full";
+        bubble.className = "msg-bot max-w-full whitespace-pre-wrap";
         bubble.textContent = text;
         
         const timestamp = document.createElement("span");
