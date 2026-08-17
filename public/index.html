@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Zalando+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
     <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.378.0/umd/lucide.min.js"></script>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23007AFF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.48 12H2'/%3E%3C/svg%3E">
     <link rel="stylesheet" href="output.css" />
   </head>
@@ -137,8 +137,16 @@
 
     <!-- JavaScript -->
     <script>
-      // Initialize Lucide Icons
-      lucide.createIcons();
+      // Safe Icon Initialization
+      function initIcons() {
+        if (typeof lucide !== 'undefined') {
+          lucide.createIcons();
+        } else {
+          console.warn("Lucide icons failed to load from CDN.");
+        }
+      }
+      
+      initIcons();
 
       const form = document.getElementById("chat-form");
       const input = document.getElementById("chat-input");
@@ -275,7 +283,7 @@
         wrapper.appendChild(avatar);
         wrapper.appendChild(bubbleContainer);
         chat.appendChild(wrapper);
-        lucide.createIcons();
+        initIcons();
         scrollToBottom();
       }
 
@@ -300,7 +308,7 @@
         wrapper.appendChild(avatar);
         wrapper.appendChild(bubble);
         chat.appendChild(wrapper);
-        lucide.createIcons();
+        initIcons();
         scrollToBottom();
         
         return id;
@@ -376,7 +384,7 @@
         
         contactSubmitBtn.disabled = true;
         contactSubmitBtn.innerHTML = '<i data-lucide="loader-circle" class="w-4 h-4 animate-spin"></i><span>Sending...</span>';
-        lucide.createIcons();
+        initIcons();
         
         contactResult.classList.add('hidden');
         contactResult.classList.remove('text-[var(--color-apple-blue)]', 'text-red-500');
